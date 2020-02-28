@@ -1,7 +1,7 @@
 package com.briup.service.impl;
 
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,18 +38,19 @@ public class LinkServiceImpl implements ILinkService{
 	public List<Link> findAll() {
 		List<Link> list = linkDao.findAll();
 		return list;
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public Link findById(Integer id) {
-		Link link = linkDao.findById(id).get();
-			return link;
+		Optional<Link> opt = linkDao.findById(id);
+		Link link = opt.isPresent()?opt.get():null;
+		
+		return link;
 		
 	}
 	@Override
 	public void deleteById(Integer id) throws Exception {
-		Link link = linkDao.findById(id).get();
+		Optional<Link> opt = linkDao.findById(id);
+		Link link = opt.isPresent()?opt.get():null;
 		if(link!=null) {
 			linkDao.deleteById(id);
 		}else {

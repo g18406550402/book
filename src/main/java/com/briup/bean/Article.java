@@ -12,6 +12,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="cms_article")
@@ -20,6 +22,7 @@ public class Article {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String author;
+	@Column(name="clickTimes")
 	private Integer clickTimes;
 	@Lob
 	@Column(columnDefinition="text")
@@ -29,6 +32,7 @@ public class Article {
 	
 	@ManyToOne
 	@JoinColumn(name="category_id")
+	@JsonIgnore
 	private Category category;
 	
 	public Article() {}
