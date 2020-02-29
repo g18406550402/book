@@ -8,4 +8,5 @@ public interface IArticleService {
 	public Article findById(int id)throws Exception;
 	public List<Article> findAll();
 	public void deleteById(Integer id)throws Exception;
+	public Integer findCategoryIdById(Integer id);
 }

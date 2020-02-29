@@ -1,5 +1,6 @@
 package com.briup.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.briup.bean.Article;
+import com.briup.bean.ArticleAndCategoryName;
 import com.briup.bean.Category;
 import com.briup.service.IArticleService;
+import com.briup.service.ICategoryService;
 import com.briup.utils.Message;
 import com.briup.utils.MessageUtil;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -28,25 +29,39 @@ public class ArticleController {
 	
 	@Autowired
 	private IArticleService articleService;
+	@Autowired
+	private ICategoryService categoryService;
 	
 	@PutMapping("/saveOrUpdate")
-	@ApiOperation("save or update a article by id")
-	@ApiImplicitParams({
+	@ApiOperation(value="save or update a article by id",notes="category.code,category.name可以不用谢")
+	/*@ApiImplicitParams({
 		@ApiImplicitParam(name="id",value="ID",paramType="query",dataType="int"),
 		@ApiImplicitParam(name="title",value="title",paramType="query",dataType="String"),
 		@ApiImplicitParam(name="author",value="author",paramType="query",dataType="String"),
 		@ApiImplicitParam(name="categoryId",value="categoryId",paramType="query",dataType="int")
-	})
-	public Message<String> saveOrUpdate(Integer id,String title,String author,Integer categoryid){
+	})*/
+	public Message<String> saveOrUpdate(ArticleAndCategoryName articleAndCategoryName){
+		String categoryName = articleAndCategoryName.getCategoryNmae();
+		Integer categoryId=null;
+		try {
+			categoryId = categoryService.findIdByName(categoryName);
+		} catch (Exception e1) {
+			return MessageUtil.error(500, e1.getMessage());
+		}
 		try {
 			Article article = new Article();
-			article.setId(id);
-			article.setTitle(title);
-			article.setAuthor(author);
+			article.setId(articleAndCategoryName.getId());
+			article.setTitle(articleAndCategoryName.getTitle());
+			article.setAuthor(articleAndCategoryName.getAuthor());
+			article.setContent(articleAndCategoryName.getContent());
 			article.setPublishDate(new Date());
 			article.setClickTimes(0);
 			Category category = new Category();
-			category.setId(categoryid);
+			if(categoryId!=null)
+				category.setId(categoryId);
+			else {
+				category.setId(articleService.findCategoryIdById(articleAndCategoryName.getId()));
+			}
 			article.setCategory(category);
 			articleService.saveOrUpdate(article);
 			return MessageUtil.success("save success!!!");
@@ -57,20 +72,30 @@ public class ArticleController {
 	}
 	@GetMapping("/findById")
 	@ApiOperation("find a article by id")
-	public Message<Article> findById(int id){
-		Message<Article> message = null;
+	public Message<ArticleAndCategoryName> findById(int id){
+		Message<ArticleAndCategoryName> message = null;
 		try {
 			Article article = articleService.findById(id);
-			MessageUtil.success(article);
+			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
+					article.getContent(), article.getPublishDate(), 
+					article.getTitle(), article.getCategory().getName());
+			message=MessageUtil.success(ac);
 		} catch (Exception e) {
-			MessageUtil.error(500, e.getMessage());
+			message=MessageUtil.error(500, e.getMessage());
 		}
 		return message;
 	}
 	@GetMapping("/findAll")
-	public Message<List<Article>> findAll(){
+	public Message<List<ArticleAndCategoryName>> findAll(){
 		List<Article> list = articleService.findAll();
-		return MessageUtil.success(list);
+		List<ArticleAndCategoryName> aclist=new ArrayList<ArticleAndCategoryName>();
+		for(Article article:list) {
+			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
+					article.getContent(), article.getPublishDate(), 
+					article.getTitle(), article.getCategory().getName());
+			aclist.add(ac);
+		}
+		return MessageUtil.success(aclist);
 	}
 	@DeleteMapping("/deleteById")
 	@ApiOperation("根据id删除文章")

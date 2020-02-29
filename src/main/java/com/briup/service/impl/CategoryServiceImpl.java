@@ -7,13 +7,17 @@ import org.hibernate.boot.archive.scan.spi.ClassDescriptor.Categorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.briup.bean.Article;
 import com.briup.bean.Category;
+import com.briup.dao.ArticleDao;
 import com.briup.dao.CategoryDao;
 import com.briup.service.ICategoryService;
 @Service
 public class CategoryServiceImpl implements ICategoryService{
 	@Autowired
 	private CategoryDao categoryDao;
+	@Autowired
+	private ArticleDao articleDao;
 	@Override
 	public List<Category> findAll() {
 		List<Category> list=categoryDao.findAll();
@@ -62,6 +66,22 @@ public class CategoryServiceImpl implements ICategoryService{
 		}else {
 			throw new Exception("id is null");
 		}
+	}
+	@Override
+	public Integer findIdByName(String name) throws Exception {
+		if(name!=null) {
+		Integer id = categoryDao.findIdByName(name);
+		if(id!=null)
+			return id;
+		else
+			throw new Exception("该栏目名不存在");
+		}else
+			return null;
+	}
+	@Override
+	public List<Article> findByCategory(Integer categoryId) {
+		List<Article> articleList = articleDao.findByCategory(categoryId);
+		return articleList;
 	}
 	
 

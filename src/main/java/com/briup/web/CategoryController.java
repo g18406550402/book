@@ -1,5 +1,6 @@
 package com.briup.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.briup.bean.Article;
+import com.briup.bean.ArticleAndCategoryName;
 import com.briup.bean.Category;
+import com.briup.bean.CategoryPack;
 import com.briup.service.ICategoryService;
 import com.briup.utils.Message;
 import com.briup.utils.MessageUtil;
@@ -27,9 +31,14 @@ public class CategoryController {
 	private ICategoryService categoryService;
 	@GetMapping("/findAll")
 	@ApiOperation("select all")
-	public Message<List<Category>> findAll(){
+	public Message<List<CategoryPack>> findAll(){
 		List<Category> categoryList = categoryService.findAll();
-		return MessageUtil.success(categoryList);
+		List<CategoryPack> categoryPackList = new ArrayList<CategoryPack>();
+		for(Category c:categoryList) {
+			CategoryPack categoryPack=new CategoryPack(c.getId(), c.getCode(), c.getName());
+			categoryPackList.add(categoryPack);
+		}
+		return MessageUtil.success(categoryPackList);
 	}
 	@DeleteMapping("/deleteById")
 	@ApiOperation("")
@@ -45,12 +54,15 @@ public class CategoryController {
 		return message;
 	}
 	@PutMapping("/saveOrUpdate")
-	@ApiOperation("保存或更")
+	@ApiOperation("保存或更新一个栏目")
 	
-	public Message<String> saveOrUpdate(@RequestParam(required = false)Integer id,String name,int code){
-		System.out.println("id:----------"+id);
-		Category category = new Category(id, code, name);
+	public Message<String> saveOrUpdate(CategoryPack categoryPack){
+		System.out.println("id:----------"+categoryPack.getId());
 		Message<String> message = null;
+		Category category = new Category();
+		category.setId(categoryPack.getId());
+		category.setCode(categoryPack.getCode());
+		category.setName(categoryPack.getName());
 		try {
 			categoryService.saveOrUpdate(category);
 			message = MessageUtil.success("保存成功");
@@ -71,5 +83,20 @@ public class CategoryController {
 			message = MessageUtil.error(500, e.getMessage());
 		}
 		return message;
+	}
+	@GetMapping("/findByCategory")
+	@ApiOperation("查找该栏目的所有文章")
+	@ApiImplicitParam(name="categoryId",paramType="query",dataType="Integer",required=true)
+	public Message<List<ArticleAndCategoryName>> findByCategoryId(Integer categoryId){
+		List<Article> list = categoryService.findByCategory(categoryId);
+		System.out.println(list);
+		List<ArticleAndCategoryName> aclist=new ArrayList<ArticleAndCategoryName>();
+		for(Article article:list) {
+			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
+					article.getContent(), article.getPublishDate(), 
+					article.getTitle(), article.getCategory().getName());
+			aclist.add(ac);
+		}
+		return MessageUtil.success(aclist);
 	}
 }

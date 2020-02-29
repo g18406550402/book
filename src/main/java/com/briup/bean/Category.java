@@ -3,6 +3,7 @@ package com.briup.bean;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.swagger.annotations.ApiModel;
@@ -19,7 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name="cms_category")
 @ApiModel
-@JsonIgnoreProperties(value={"transportOrders"})  
+//@JsonIgnoreProperties(value={"transportOrders"})  
+//@JsonIdentityInfo(generator =Category.class) //ObjectIdGenerators.IntSequenceGenerator.class,property =@Id”)
 public class Category {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -28,8 +31,11 @@ public class Category {
 	@ApiModelProperty(value="栏目代码",required=true)
 	private long code;
 	@ApiModelProperty(value="栏目名",required=true)
+	@Column(unique=true)
 	private String name;
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="category")
+	//@JsonIgnoreProperties(value = { "category" })
+	
 	private List<Article> articles;
 	public Category() {
 	}
@@ -39,7 +45,7 @@ public class Category {
 		this.code = code;
 	}
 
-
+	
 	public Category(long code, String name) {
 		super();
 		this.code = code;
