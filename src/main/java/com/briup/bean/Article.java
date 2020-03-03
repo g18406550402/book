@@ -1,15 +1,19 @@
 package com.briup.bean;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,13 +35,13 @@ public class Article {
 	private String author;
 	@ApiModelProperty(value="点击次数",hidden=true)
 	@Column(name="clickTimes")
-	
 	private Integer clickTimes;
 	@Lob
 	@Column(columnDefinition="text")
 	@ApiModelProperty(value="文章内容")
 	private String content;
 	@ApiModelProperty(value="文章点击次数",hidden=true)
+	@Column(name="publicshDate")
 	private Date publishDate;
 	@ApiModelProperty(value="文章标题")
 	private String title;
@@ -47,6 +51,11 @@ public class Article {
 	//@JsonIgnore
 	private Category category;
 	
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<Chapter> chapters;
+	
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<Comment> comments;
 	public Article() {}
 
 	public Article(String author, Integer clickTimes, String content, Date publishDate, String title) {
@@ -56,6 +65,23 @@ public class Article {
 		this.content = content;
 		this.publishDate = publishDate;
 		this.title = title;
+	}
+	
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<Chapter> getChapters() {
+		return chapters;
+	}
+
+	public void setChapters(List<Chapter> chapters) {
+		this.chapters = chapters;
 	}
 
 	public Integer getId() {

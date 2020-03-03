@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.briup.bean.Article;
 import com.briup.bean.ArticleAndCategoryName;
 import com.briup.bean.Category;
+import com.briup.bean.Chapter;
 import com.briup.service.IArticleService;
 import com.briup.service.ICategoryService;
 import com.briup.utils.Message;
@@ -109,6 +110,10 @@ public class ArticleController {
 			message = MessageUtil.error(500, e.getMessage());
 		}
 		return message;
-		
+	}
+	@GetMapping("/findAllChapter")
+	public Message<List<Chapter>> findAllChapter(Integer article_id){
+		List<Chapter> chapterList = articleService.findAllChapterById(article_id);
+		return MessageUtil.success(chapterList);
 	}
 }

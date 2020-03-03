@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements ICategoryService{
 				categoryDao.save(category_db);
 			}
 		}else {
-			throw new Exception("parameter is null");
+			throw new Exception("参数为空！");
 		}
 	}
 	@Override
