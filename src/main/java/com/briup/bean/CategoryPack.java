@@ -8,9 +8,9 @@ import io.swagger.annotations.ApiModelProperty;
 public class CategoryPack {
 	@ApiModelProperty(value="栏目id")
 	private Integer id;
-	@ApiModelProperty(value="栏目代码",required=true)
+	@ApiModelProperty(value="栏目代码")
 	private long code;
-	@ApiModelProperty(value="栏目名",required=true)
+	@ApiModelProperty(value="栏目名")
 	@Column(unique=true)
 	private String name;
 	

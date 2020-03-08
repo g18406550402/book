@@ -24,7 +24,7 @@ public class Chapter {
 	@Column(columnDefinition="text")
 	@ApiModelProperty(value="章节内容")
 	private String content;
-	@ApiModelProperty(value="章节标题")
+	@ApiModelProperty(value="小说id")
 	@Column(name="article_id")
 	private Integer articleId;
 	

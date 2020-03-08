@@ -30,7 +30,7 @@ public class CategoryController {
 	@Autowired
 	private ICategoryService categoryService;
 	@GetMapping("/findAll")
-	@ApiOperation("select all")
+	@ApiOperation("查询所有栏目")
 	public Message<List<CategoryPack>> findAll(){
 		List<Category> categoryList = categoryService.findAll();
 		List<CategoryPack> categoryPackList = new ArrayList<CategoryPack>();
@@ -41,7 +41,7 @@ public class CategoryController {
 		return MessageUtil.success(categoryPackList);
 	}
 	@DeleteMapping("/deleteById")
-	@ApiOperation("")
+	@ApiOperation("根据id删除栏目")
 	@ApiImplicitParam(name="id",value="栏目id",paramType="query",dataType="int",required=true)
 	public Message<String> deleteById(int id){
 		Message<String> message = null;
@@ -57,7 +57,6 @@ public class CategoryController {
 	@ApiOperation("保存或更新一个栏目")
 	
 	public Message<String> saveOrUpdate(CategoryPack categoryPack){
-		System.out.println("id:----------"+categoryPack.getId());
 		Message<String> message = null;
 		Category category = new Category();
 		category.setId(categoryPack.getId());
@@ -72,7 +71,7 @@ public class CategoryController {
 		return message;
 	}
 	@GetMapping("/findById")
-	@ApiOperation("delete lanmu by id")
+	@ApiOperation("根据id查询栏目")
 	@ApiImplicitParam(name="id",paramType="query",dataType="int",required=true)
 	public Message<Category> findById(int id){
 		Message<Category> message = null;
@@ -93,8 +92,8 @@ public class CategoryController {
 		List<ArticleAndCategoryName> aclist=new ArrayList<ArticleAndCategoryName>();
 		for(Article article:list) {
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
-					article.getContent(), article.getPublishDate(), 
-					article.getTitle(), article.getCategory().getName());
+					article.getIntro(), article.getUpdateDate(), 
+					article.getTitle(),article.getState(),article.getWords(), categoryService.findNameById(article.getId()));
 			aclist.add(ac);
 		}
 		return MessageUtil.success(aclist);

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<textarea id="ta"></textarea>
+	<br><input type = "button" value="输入完毕" onclick="replaceText()"/>
+	<script>
+		function replaceText(){
+			var v = document.getElementById('ta').value.replace(/\r/g,'');
+			if(v!=''){
+				v='<p>'+v.replace(\/n*$/g,'').replace(/\n/g,'</p><p>')+'</p>';
+				alert(v)
+			}
+			
+		}
+	</script>
+</body>
+</html>

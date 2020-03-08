@@ -12,8 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,8 +20,6 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name="cms_category")
 @ApiModel
-//@JsonIgnoreProperties(value={"transportOrders"})  
-//@JsonIdentityInfo(generator =Category.class) //ObjectIdGenerators.IntSequenceGenerator.class,property =@Id”)
 public class Category {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,9 +30,7 @@ public class Category {
 	@ApiModelProperty(value="栏目名",required=true)
 	@Column(unique=true)
 	private String name;
-	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="category")
-	//@JsonIgnoreProperties(value = { "category" })
-	
+	@OneToMany//(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="category")
 	private List<Article> articles;
 	public Category() {
 	}

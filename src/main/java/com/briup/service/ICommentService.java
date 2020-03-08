@@ -13,5 +13,5 @@ public interface ICommentService {
 	
 	public void deleteById(Integer id)throws Exception;
 	
-	
+	public List<Comment> findCommentByArticleId (Integer id);
 }

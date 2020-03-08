@@ -17,9 +17,9 @@ public class Link {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@ApiModelProperty(value="链接id")
 	private Integer id;
-	@ApiModelProperty(value="链接名",required=true)
+	@ApiModelProperty(value="链接名")
 	private String name;
-	@ApiModelProperty(value="链接地址",required=true)
+	@ApiModelProperty(value="链接地址")
 	private String url;
 	
 	public Link() {

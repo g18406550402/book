@@ -21,6 +21,7 @@ import com.briup.utils.Message;
 import com.briup.utils.MessageUtil;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -34,17 +35,12 @@ public class ArticleController {
 	private ICategoryService categoryService;
 	
 	@PutMapping("/saveOrUpdate")
-	@ApiOperation(value="save or update a article by id",notes="category.code,category.name可以不用谢")
-	/*@ApiImplicitParams({
-		@ApiImplicitParam(name="id",value="ID",paramType="query",dataType="int"),
-		@ApiImplicitParam(name="title",value="title",paramType="query",dataType="String"),
-		@ApiImplicitParam(name="author",value="author",paramType="query",dataType="String"),
-		@ApiImplicitParam(name="categoryId",value="categoryId",paramType="query",dataType="int")
-	})*/
+	@ApiOperation(value="保存或更新一篇文章")
 	public Message<String> saveOrUpdate(ArticleAndCategoryName articleAndCategoryName){
 		String categoryName = articleAndCategoryName.getCategoryNmae();
 		Integer categoryId=null;
 		try {
+			//根据输入的栏目名查找栏目id
 			categoryId = categoryService.findIdByName(categoryName);
 		} catch (Exception e1) {
 			return MessageUtil.error(500, e1.getMessage());
@@ -54,52 +50,57 @@ public class ArticleController {
 			article.setId(articleAndCategoryName.getId());
 			article.setTitle(articleAndCategoryName.getTitle());
 			article.setAuthor(articleAndCategoryName.getAuthor());
-			article.setContent(articleAndCategoryName.getContent());
-			article.setPublishDate(new Date());
+			article.setIntro(articleAndCategoryName.getIntro());
+			article.setUpdateDate(new Date());
 			article.setClickTimes(0);
-			Category category = new Category();
+			article.setWords(articleAndCategoryName.getWords());
+			article.setState(articleAndCategoryName.getState());
 			if(categoryId!=null)
-				category.setId(categoryId);
+				article.setCategory_id(categoryId);
 			else {
-				category.setId(articleService.findCategoryIdById(articleAndCategoryName.getId()));
+				article.setCategory_id(articleService.findCategoryIdById(articleAndCategoryName.getId()));
 			}
-			article.setCategory(category);
 			articleService.saveOrUpdate(article);
-			return MessageUtil.success("save success!!!");
+			return MessageUtil.success("更新成功！");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return MessageUtil.error(500, e.getMessage());
 		}
 	}
 	@GetMapping("/findById")
-	@ApiOperation("find a article by id")
+	@ApiOperation("根据id查询文章")
+	@ApiImplicitParam(name="id",value="文章id",paramType="query",dataType="int",required=true)
 	public Message<ArticleAndCategoryName> findById(int id){
 		Message<ArticleAndCategoryName> message = null;
 		try {
 			Article article = articleService.findById(id);
+			String name = categoryService.findNameById(article.getCategory_id());
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
-					article.getContent(), article.getPublishDate(), 
-					article.getTitle(), article.getCategory().getName());
+					article.getIntro(), article.getUpdateDate(), 
+					article.getTitle(),article.getState(),article.getWords(), name);
 			message=MessageUtil.success(ac);
 		} catch (Exception e) {
 			message=MessageUtil.error(500, e.getMessage());
 		}
 		return message;
 	}
+	@ApiOperation("查询所有文章")
 	@GetMapping("/findAll")
 	public Message<List<ArticleAndCategoryName>> findAll(){
 		List<Article> list = articleService.findAll();
 		List<ArticleAndCategoryName> aclist=new ArrayList<ArticleAndCategoryName>();
 		for(Article article:list) {
+			String categoryName=categoryService.findNameById(article.getId());
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
-					article.getContent(), article.getPublishDate(), 
-					article.getTitle(), article.getCategory().getName());
+					article.getIntro(), article.getUpdateDate(), 
+					article.getTitle(),article.getState(),article.getWords(), categoryName);
 			aclist.add(ac);
 		}
 		return MessageUtil.success(aclist);
 	}
 	@DeleteMapping("/deleteById")
 	@ApiOperation("根据id删除文章")
+	@ApiImplicitParam(name="id",value="文章id",paramType="query",dataType="int",required=true)
 	public Message<String> deleteById(Integer id){
 		Message<String> message = null;
 		try {
@@ -111,9 +112,21 @@ public class ArticleController {
 		}
 		return message;
 	}
-	@GetMapping("/findAllChapter")
-	public Message<List<Chapter>> findAllChapter(Integer article_id){
-		List<Chapter> chapterList = articleService.findAllChapterById(article_id);
-		return MessageUtil.success(chapterList);
+	
+	@ApiOperation("根据标题或作者查询文章")
+	@GetMapping("/findByTitleOrAuthor")
+	@ApiImplicitParam(name="titleOrAuthor",value="文章的标题或作者",paramType="query",dataType="String",required=true)
+	public Message<List<Article>> findByTitleOrArthor(String titleOrAuthor){
+		
+		List<Article> articleList;
+		try {
+			articleList = articleService.findByTitleOrArthor(titleOrAuthor);
+			return MessageUtil.success(articleList);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return MessageUtil.error(500, e.getMessage());
+		}
+		
 	}
 }

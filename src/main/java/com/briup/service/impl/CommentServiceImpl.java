@@ -41,11 +41,16 @@ public class CommentServiceImpl implements ICommentService{
 				Comment comment_db = commentDao.findById(id).get();
 				String content = comment.getContent();
 				Integer articleId = comment.getArticleId();
-				if(comment!=null)
+				Date publishDate = comment.getPublishDate();
+				if(content!=null)
 					comment_db.setContent(content);
 				if(articleId!=null)
 					comment_db.setArticleId(articleId);
+				if(publishDate!=null) 
+					comment_db.setPublishDate(publishDate);
+				
 				commentDao.save(comment_db);
+				
 			}
 		}else {
 			throw new Exception("参数为空！");
@@ -62,6 +67,13 @@ public class CommentServiceImpl implements ICommentService{
 			throw new Exception("该id在数据库中不存在！");
 		}
 		
+	}
+
+	@Override
+	public List<Comment> findCommentByArticleId(Integer id)  {
+		List<Comment> commentList = commentDao.findCommentByArticleId(id);
+		
+		return commentList;
 	}
 
 }

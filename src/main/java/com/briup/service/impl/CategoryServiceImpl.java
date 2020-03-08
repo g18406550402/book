@@ -70,11 +70,11 @@ public class CategoryServiceImpl implements ICategoryService{
 	@Override
 	public Integer findIdByName(String name) throws Exception {
 		if(name!=null) {
-		Integer id = categoryDao.findIdByName(name);
-		if(id!=null)
-			return id;
-		else
-			throw new Exception("该栏目名不存在");
+			Integer id = categoryDao.findIdByName(name);
+			if(id!=null)
+				return id;
+			else
+				throw new Exception("该栏目名不存在");
 		}else
 			return null;
 	}
@@ -82,6 +82,12 @@ public class CategoryServiceImpl implements ICategoryService{
 	public List<Article> findByCategory(Integer categoryId) {
 		List<Article> articleList = articleDao.findByCategory(categoryId);
 		return articleList;
+	}
+	@Override
+	public String findNameById(Integer id)  {
+		
+		String  name = categoryDao.findNameById(id);
+		return name;
 	}
 	
 

@@ -39,7 +39,9 @@ public class LinkController {
 		return MessageUtil.success(list);
 	}
 	@GetMapping("/findById")
+	@ApiImplicitParam(name="id",value="链接ID",paramType="query",dataType="int",required=true)
 	@ApiOperation("根据id查询Link")
+	
 	public Message<Link> findById(Integer id){
 		
 			Link link = linkService.findById(id);

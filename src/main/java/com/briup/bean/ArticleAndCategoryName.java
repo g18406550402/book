@@ -11,29 +11,38 @@ public class ArticleAndCategoryName {
 	private Integer id;
 	@ApiModelProperty(value="文章作者")
 	private String author;
-	@ApiModelProperty(value="点击次数",hidden=true)
-	private Integer clickTimes;
-	@ApiModelProperty(value="文章内容")
-	private String content;
 	@ApiModelProperty(value="文章点击次数",hidden=true)
-	private Date publishDate;
+	private Integer clickTimes;
+	@ApiModelProperty(value="文章简介")
+	private String intro;
+	@ApiModelProperty(value="文章更新时间",hidden=true)
+	private Date updateDate;
 	@ApiModelProperty(value="文章标题")
 	private String title;
+	@ApiModelProperty(value="文章状态")
+	private String state;
+	@ApiModelProperty(value="文章字数（万字）")
+	private Integer words;
+	
 	@ApiModelProperty(value="文章所在栏目")
 	private String categoryNmae;
 	public ArticleAndCategoryName() {
 	}
-	public ArticleAndCategoryName(Integer id, String author, Integer clickTimes, String content, Date publishDate,
-			String title, String categoryNmae) {
+
+	public ArticleAndCategoryName(Integer id, String author, Integer clickTimes, String intro, Date updateDate,
+			String title, String state, Integer words, String categoryNmae) {
 		super();
 		this.id = id;
 		this.author = author;
 		this.clickTimes = clickTimes;
-		this.content = content;
-		this.publishDate = publishDate;
+		this.intro = intro;
+		this.updateDate = updateDate;
 		this.title = title;
+		this.state = state;
+		this.words = words;
 		this.categoryNmae = categoryNmae;
 	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -52,18 +61,7 @@ public class ArticleAndCategoryName {
 	public void setClickTimes(Integer clickTimes) {
 		this.clickTimes = clickTimes;
 	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public Date getPublishDate() {
-		return publishDate;
-	}
-	public void setPublishDate(Date publishDate) {
-		this.publishDate = publishDate;
-	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -73,14 +71,50 @@ public class ArticleAndCategoryName {
 	public String getCategoryNmae() {
 		return categoryNmae;
 	}
+	
+	
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public Integer getWords() {
+		return words;
+	}
+
+	public void setWords(Integer words) {
+		this.words = words;
+	}
+
 	public void setCategoryNmae(String categoryNmae) {
 		this.categoryNmae = categoryNmae;
 	}
+
 	@Override
 	public String toString() {
-		return "ArticleAndCategoryName [id=" + id + ", author=" + author + ", clickTimes=" + clickTimes + ", content="
-				+ content + ", publishDate=" + publishDate + ", title=" + title + ", categoryNmae=" + categoryNmae
-				+ "]";
+		return "ArticleAndCategoryName [id=" + id + ", author=" + author + ", clickTimes=" + clickTimes + ", intro="
+				+ intro + ", updateDate=" + updateDate + ", title=" + title + ", state=" + state + ", words=" + words
+				+ ", categoryNmae=" + categoryNmae + "]";
 	}
+	
 	
 }

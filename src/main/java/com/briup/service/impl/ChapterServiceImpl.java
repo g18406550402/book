@@ -1,5 +1,6 @@
 package com.briup.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,13 @@ public class ChapterServiceImpl implements IChapterService {
 				//更改标题作者栏目
 				String subtitle = chapter.getSubtitle();
 				String content = chapter.getContent();
+				Integer articleId = chapter.getArticleId();
 				if(subtitle!=null) 
 					chapter_db.setSubtitle(subtitle);
 				if(content!=null)
 					chapter_db.setContent(content);
+				if(articleId!=null)
+					chapter_db.setArticleId(articleId);
 				chapterDao.save(chapter_db);
 			}
 		}else{
@@ -59,6 +63,12 @@ public class ChapterServiceImpl implements IChapterService {
 		}else {
 			throw new Exception("该id在数据库中不存在！");
 		}
+	}
+	
+	@Override
+	public List<Chapter> findAllChapterById(Integer article_id) {
+		List<Chapter> chapList = chapterDao.findAllChapterByArticleId(article_id);
+		return chapList;
 	}
 
 }

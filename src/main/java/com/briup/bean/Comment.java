@@ -22,20 +22,29 @@ public class Comment {
 	private Integer id;
 	@ApiModelProperty(value="评论内容")
 	private String content;
-	@ApiModelProperty(value="评论发表日期")
+	@ApiModelProperty(value="评论发表日期",hidden=true)
 	@Column(name="publishDate")
 	private Date publishDate;
 	@Column(name="article_id")
 	private Integer articleId;
+	/*@Column(name="reader_id")
+	private Integer readerId;*/
 	public Comment() {
 		super();
 	}
-	public Comment(Integer id, String content, Date publishDate) {
+	
+	
+
+	public Comment(Integer id, String content, Date publishDate, Integer articleId) {
 		super();
 		this.id = id;
 		this.content = content;
 		this.publishDate = publishDate;
+		this.articleId = articleId;
 	}
+
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -62,6 +71,15 @@ public class Comment {
 	public void setArticleId(Integer articleId) {
 		this.articleId = articleId;
 	}
+	
+	/*public Integer getReaderId() {
+		return readerId;
+	}
+
+	public void setReaderId(Integer readerId) {
+		this.readerId = readerId;
+	}*/
+
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", content=" + content + ", publishDate=" + publishDate + "]";

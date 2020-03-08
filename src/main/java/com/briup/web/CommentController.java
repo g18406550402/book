@@ -16,6 +16,7 @@ import com.briup.utils.Message;
 import com.briup.utils.MessageUtil;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -25,7 +26,7 @@ public class CommentController {
 	@Autowired
 	private ICommentService commentService;
 	
-	@PutMapping("/findAll")
+	@GetMapping("/findAll")
 	@ApiOperation("查找全部评论")
 	public Message<List<Comment>> findAll(){
 		List<Comment> commentList = commentService.findAll();
@@ -33,6 +34,7 @@ public class CommentController {
 	}
 	@GetMapping("/findById")
 	@ApiOperation("根据id查找评论")
+	@ApiImplicitParam(name="id",value="评论id",paramType="query",dataType="int",required=true)
 	public Message<Comment> findById(Integer id){
 		try {
 			Comment comment = commentService.findById(id);
@@ -44,6 +46,7 @@ public class CommentController {
 	}
 	@DeleteMapping("/deleteById")
 	@ApiOperation("根据id删除评论")
+	@ApiImplicitParam(name="id",value="评论id",paramType="query",dataType="int",required=true)
 	public Message<String> deleteById(Integer id){
 		try {
 			commentService.deleteById(id);
@@ -52,6 +55,9 @@ public class CommentController {
 			return MessageUtil.error(500, e.getMessage());
 		}
 	}
+	
+	@PutMapping("/saveOrUpdate")
+	@ApiOperation("保存或更新评论")
 	public Message<String> saveOrUpdate(Comment comment){
 		
 		try {
@@ -61,5 +67,12 @@ public class CommentController {
 		} catch (Exception e) {
 			return MessageUtil.error(500, e.getMessage());
 		}
+	}
+	@GetMapping("/findCommentByArticleId")
+	@ApiOperation("根据文章id查找评论")
+	@ApiImplicitParam(name="article_id",value="文章id",paramType="query",dataType="int",required=true)
+	public Message<List<Comment>> findCommentByArticleId(Integer article_id){
+		List<Comment> commentList = commentService.findCommentByArticleId(article_id);
+		return MessageUtil.success(commentList);
 	}
 }
