@@ -1,6 +1,7 @@
 package com.briup.bean;
 
 import java.util.Date;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -23,14 +24,15 @@ public class ArticleAndCategoryName {
 	private String state;
 	@ApiModelProperty(value="文章字数（万字）")
 	private Integer words;
-	
+	@ApiModelProperty(value="文章图片URL")
+	private String image;
 	@ApiModelProperty(value="文章所在栏目")
 	private String categoryNmae;
 	public ArticleAndCategoryName() {
 	}
 
 	public ArticleAndCategoryName(Integer id, String author, Integer clickTimes, String intro, Date updateDate,
-			String title, String state, Integer words, String categoryNmae) {
+			String title, String state, Integer words, String image,String categoryNmae) {
 		super();
 		this.id = id;
 		this.author = author;
@@ -40,6 +42,7 @@ public class ArticleAndCategoryName {
 		this.title = title;
 		this.state = state;
 		this.words = words;
+		this.image = image;
 		this.categoryNmae = categoryNmae;
 	}
 
@@ -107,6 +110,14 @@ public class ArticleAndCategoryName {
 
 	public void setCategoryNmae(String categoryNmae) {
 		this.categoryNmae = categoryNmae;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@Override

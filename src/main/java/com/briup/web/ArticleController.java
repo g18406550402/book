@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,7 @@ public class ArticleController {
 	@Autowired
 	private ICategoryService categoryService;
 	
-	@PutMapping("/saveOrUpdate")
+	@PostMapping("/saveOrUpdate")
 	@ApiOperation(value="保存或更新一篇文章")
 	public Message<String> saveOrUpdate(ArticleAndCategoryName articleAndCategoryName){
 		String categoryName = articleAndCategoryName.getCategoryNmae();
@@ -55,6 +56,7 @@ public class ArticleController {
 			article.setClickTimes(0);
 			article.setWords(articleAndCategoryName.getWords());
 			article.setState(articleAndCategoryName.getState());
+			article.setImage(articleAndCategoryName.getImage());
 			if(categoryId!=null)
 				article.setCategory_id(categoryId);
 			else {
@@ -75,9 +77,19 @@ public class ArticleController {
 		try {
 			Article article = articleService.findById(id);
 			String name = categoryService.findNameById(article.getCategory_id());
-			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
-					article.getIntro(), article.getUpdateDate(), 
-					article.getTitle(),article.getState(),article.getWords(), name);
+			ArticleAndCategoryName ac = new ArticleAndCategoryName();
+			
+			ac.setId(article.getId());
+			ac.setAuthor(article.getAuthor());
+			ac.setClickTimes(article.getClickTimes());
+			ac.setIntro(article.getIntro());
+			ac.setUpdateDate(article.getUpdateDate());
+			ac.setTitle(article.getTitle());
+			ac.setState(article.getState());
+			ac.setImage(article.getImage());
+			//words字段处理
+				ac.setWords(article.getWords());
+			ac.setCategoryNmae(name);
 			message=MessageUtil.success(ac);
 		} catch (Exception e) {
 			message=MessageUtil.error(500, e.getMessage());
@@ -93,7 +105,7 @@ public class ArticleController {
 			String categoryName=categoryService.findNameById(article.getId());
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
 					article.getIntro(), article.getUpdateDate(), 
-					article.getTitle(),article.getState(),article.getWords(), categoryName);
+					article.getTitle(),article.getState(),article.getWords(), article.getImage(),categoryName);
 			aclist.add(ac);
 		}
 		return MessageUtil.success(aclist);

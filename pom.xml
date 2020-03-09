@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.briup</groupId>
-	<artifactId>cms</artifactId>
+	<artifactId>Book</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cms</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Book</name>
+	<description>Web Novel Reading System</description>
 
 	<properties>
 		<java.version>1.8</java.version>

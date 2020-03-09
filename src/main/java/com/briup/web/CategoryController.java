@@ -47,7 +47,7 @@ public class CategoryController {
 		Message<String> message = null;
 		try {
 			categoryService.deleteById(id);
-			message = MessageUtil.success("delete success");
+			message = MessageUtil.success("删除成功！");
 		} catch (Exception e) {
 			message = MessageUtil.error(500, e.getMessage());
 		}
@@ -93,7 +93,7 @@ public class CategoryController {
 		for(Article article:list) {
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
 					article.getIntro(), article.getUpdateDate(), 
-					article.getTitle(),article.getState(),article.getWords(), categoryService.findNameById(article.getId()));
+					article.getTitle(),article.getState(),article.getWords(),article.getImage(), categoryService.findNameById(article.getId()));
 			aclist.add(ac);
 		}
 		return MessageUtil.success(aclist);

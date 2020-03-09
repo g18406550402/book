@@ -1,5 +1,6 @@
 package com.briup.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ArticleServiceImpl implements IArticleService{
 			articleDao.save(article);
 			return article;
 		}else {
-			throw new Exception("id is not present");
+			throw new Exception("该id在数据库中不存在！");
 		}
 		
 	}
@@ -41,6 +42,9 @@ public class ArticleServiceImpl implements IArticleService{
 				String content = article.getIntro();
 				Integer words = article.getWords();
 				String state = article.getState();
+				String image = article.getImage();
+				Date updateDate = article.getUpdateDate();
+				article_db.setUpdateDate(updateDate);
 				if(author!=null) 
 					article_db.setAuthor(author);
 				if(title!=null)
@@ -53,6 +57,9 @@ public class ArticleServiceImpl implements IArticleService{
 					article_db.setWords(words);
 				if(state!=null)
 					article_db.setState(state);
+				if(image!=null)
+					article_db.setImage(image);
+				
 				articleDao.save(article_db);
 			}
 		}else{

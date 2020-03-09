@@ -21,11 +21,11 @@ import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 
 @Entity
 @Table(name="cms_article")
@@ -53,6 +53,8 @@ public class Article {
 	private String state;
 	@ApiModelProperty(value="文章字数（万字）")
 	private Integer words;
+	@ApiModelProperty(value="文章图片URL")
+	private String image;
 	
 	@Column(name="category_id")
 	private Integer category_id;
@@ -65,10 +67,11 @@ public class Article {
 	@OneToMany
 	private List<Comment> comments;
 	public Article() {}
-	
-	public Article(String author, Integer clickTimes, String intro, Date updateDate, String title, String state,
-			int words, Integer category_id) {
+
+	public Article(Integer id, String author, Integer clickTimes, String intro, Date updateDate, String title,
+			String state, Integer words, String image, Integer category_id) {
 		super();
+		this.id = id;
 		this.author = author;
 		this.clickTimes = clickTimes;
 		this.intro = intro;
@@ -76,26 +79,8 @@ public class Article {
 		this.title = title;
 		this.state = state;
 		this.words = words;
+		this.image = image;
 		this.category_id = category_id;
-	}
-
-
-
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public List<Chapter> getChapters() {
-		return chapters;
-	}
-
-	public void setChapters(List<Chapter> chapters) {
-		this.chapters = chapters;
 	}
 
 	public Integer getId() {
@@ -122,7 +107,6 @@ public class Article {
 		this.clickTimes = clickTimes;
 	}
 
-
 	public String getIntro() {
 		return intro;
 	}
@@ -139,22 +123,6 @@ public class Article {
 		this.updateDate = updateDate;
 	}
 
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public int getWords() {
-		return words;
-	}
-
-	public void setWords(int words) {
-		this.words = words;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -163,7 +131,29 @@ public class Article {
 		this.title = title;
 	}
 
-	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public Integer getWords() {
+		return words;
+	}
+
+	public void setWords(Integer words) {
+		this.words = words;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public Integer getCategory_id() {
 		return category_id;
@@ -173,14 +163,27 @@ public class Article {
 		this.category_id = category_id;
 	}
 
+	public List<Chapter> getChapters() {
+		return chapters;
+	}
+
+	public void setChapters(List<Chapter> chapters) {
+		this.chapters = chapters;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", author=" + author + ", clickTimes=" + clickTimes + ", intro=" + intro
 				+ ", updateDate=" + updateDate + ", title=" + title + ", state=" + state + ", words=" + words
-				+ ", category_id=" + category_id + "]";
+				+ ", image=" + image + ", category_id=" + category_id + "]";
 	}
- 
-	
-	
 	
 }
