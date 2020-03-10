@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import com.briup.bean.Comment;
 
 public interface CommentDao extends JpaRepository<Comment, Integer> {
-	@Query(value="select * from cms_comment c where c.article_id=?1",nativeQuery=true)
+	@Query(value="select * from book_comment c where c.article_id=?1",nativeQuery=true)
 	public List<Comment> findCommentByArticleId(Integer article_id);
 }

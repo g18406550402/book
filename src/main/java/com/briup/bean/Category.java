@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name="cms_category")
+@Table(name="book_category")
 @ApiModel
 public class Category {
 	@Id

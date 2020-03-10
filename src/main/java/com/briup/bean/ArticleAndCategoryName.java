@@ -27,12 +27,12 @@ public class ArticleAndCategoryName {
 	@ApiModelProperty(value="文章图片URL")
 	private String image;
 	@ApiModelProperty(value="文章所在栏目")
-	private String categoryNmae;
+	private String categoryName;
 	public ArticleAndCategoryName() {
 	}
 
 	public ArticleAndCategoryName(Integer id, String author, Integer clickTimes, String intro, Date updateDate,
-			String title, String state, Integer words, String image,String categoryNmae) {
+			String title, String state, Integer words, String image,String categoryName) {
 		super();
 		this.id = id;
 		this.author = author;
@@ -43,7 +43,7 @@ public class ArticleAndCategoryName {
 		this.state = state;
 		this.words = words;
 		this.image = image;
-		this.categoryNmae = categoryNmae;
+		this.categoryName = categoryName;
 	}
 
 	public Integer getId() {
@@ -71,11 +71,16 @@ public class ArticleAndCategoryName {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getCategoryNmae() {
-		return categoryNmae;
+	
+	
+	public String getCategoryName() {
+		return categoryName;
 	}
-	
-	
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
 	public String getIntro() {
 		return intro;
 	}
@@ -108,9 +113,7 @@ public class ArticleAndCategoryName {
 		this.words = words;
 	}
 
-	public void setCategoryNmae(String categoryNmae) {
-		this.categoryNmae = categoryNmae;
-	}
+	
 
 	public String getImage() {
 		return image;
@@ -124,7 +127,7 @@ public class ArticleAndCategoryName {
 	public String toString() {
 		return "ArticleAndCategoryName [id=" + id + ", author=" + author + ", clickTimes=" + clickTimes + ", intro="
 				+ intro + ", updateDate=" + updateDate + ", title=" + title + ", state=" + state + ", words=" + words
-				+ ", categoryNmae=" + categoryNmae + "]";
+				+ ", categoryNmae=" + categoryName + "]";
 	}
 	
 	

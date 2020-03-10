@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import com.briup.bean.Chapter;
 
 public interface ChapterDao extends JpaRepository<Chapter, Integer> {
-	@Query(value="select * from cms_chapter c where c.article_id=?1",nativeQuery=true)
+	@Query(value="select * from book_chapter c where c.article_id=?1",nativeQuery=true)
 	public List<Chapter> findAllChapterByArticleId(Integer article_id);
 }

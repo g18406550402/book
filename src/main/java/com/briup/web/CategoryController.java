@@ -83,7 +83,7 @@ public class CategoryController {
 		}
 		return message;
 	}
-	@GetMapping("/findByCategory")
+	@GetMapping("/findByCategoryId")
 	@ApiOperation("查找该栏目的所有文章")
 	@ApiImplicitParam(name="categoryId",paramType="query",dataType="Integer",required=true)
 	public Message<List<ArticleAndCategoryName>> findByCategoryId(Integer categoryId){
@@ -93,7 +93,7 @@ public class CategoryController {
 		for(Article article:list) {
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
 					article.getIntro(), article.getUpdateDate(), 
-					article.getTitle(),article.getState(),article.getWords(),article.getImage(), categoryService.findNameById(article.getId()));
+					article.getTitle(),article.getState(),article.getWords(),article.getImage(), categoryService.findNameById(article.getCategory_id()));
 			aclist.add(ac);
 		}
 		return MessageUtil.success(aclist);

@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name="cms_link")
+@Table(name="book_link")
 @ApiModel
 public class Link {
 	@Id

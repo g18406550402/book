@@ -13,7 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name="cms_comment")
+@Table(name="book_comment")
 @Api
 public class Comment {
 	@Id

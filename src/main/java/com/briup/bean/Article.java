@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name="cms_article")
+@Table(name="book_article")
 @ApiModel
 public class Article {
 	@Id

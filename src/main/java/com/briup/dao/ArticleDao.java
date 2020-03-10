@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.briup.bean.Article;
 
 public interface ArticleDao extends JpaRepository<Article, Integer>{
-	@Query(value="select c.category_id from cms_article c where c.id=?1",nativeQuery=true)
+	@Query(value="select c.category_id from book_article c where c.id=?1",nativeQuery=true)
 	public Integer findCategoryIdById(Integer id);
 	
-	@Query(value="select * from cms_article c where c.category_id=?1",nativeQuery=true)
+	@Query(value="select * from book_article c where c.category_id=?1",nativeQuery=true)
 	public List<Article> findByCategory(Integer categoryId);
 	
 	@Transactional

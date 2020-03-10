@@ -17,6 +17,8 @@ import com.briup.dao.CommentDao;
 import com.briup.dao.ReaderDao;
 import com.briup.service.IArticleService;
 import com.briup.service.ICategoryService;
+import com.briup.utils.Message;
+import com.briup.utils.MessageUtil;
 
 @SpringBootTest
 class CmsApplicationTests {
@@ -33,13 +35,29 @@ class CmsApplicationTests {
 	@Test
 	void test1() throws Exception {
 		System.out.println("----------------------------");
-		Article article = articleService.findById(13);
-		System.out.println(article);
-		System.out.println("输出words地段:"+article.getWords());
-		Integer words = article.getWords();
-		System.out.println("赋值words字段："+words);
-		System.out.println("Words："+article.getWords());
+		Integer article_id = 13;
+		Article article = new Article();
+		if(article_id!=null) {
+			try {
+				article = articleService.findById(article_id);
+				System.out.println("未修改前："+article);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return ;
+			}
+			//封装文章信息--更新
+			article.setTitle(null);
+			article.setAuthor(null);
+			article.setIntro(null);
+			article.setWords(null);
+			article.setState(null);
+			article.setImage(null);
+			article.setUpdateDate(new Date());
+			
+			
+			
 		System.out.println("----------------------------");
+		}
+	
 	}
-
 }

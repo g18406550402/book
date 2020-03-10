@@ -38,36 +38,41 @@ public class ArticleController {
 	@PostMapping("/saveOrUpdate")
 	@ApiOperation(value="保存或更新一篇文章")
 	public Message<String> saveOrUpdate(ArticleAndCategoryName articleAndCategoryName){
-		String categoryName = articleAndCategoryName.getCategoryNmae();
+		//封装文章信息
+		Article article = new Article();
+		Integer id = articleAndCategoryName.getId();
+		String title = articleAndCategoryName.getTitle();
+		String author = articleAndCategoryName.getAuthor();
+		String intro = articleAndCategoryName.getIntro();
+		Integer words = articleAndCategoryName.getWords();
+		String state = articleAndCategoryName.getState();
+		String image = articleAndCategoryName.getImage();
+		article.setId(id);
+		article.setTitle(title);
+		article.setAuthor(author);
+		article.setIntro(intro);
+		article.setWords(words);
+		article.setState(state);
+		article.setImage(image);
+		article.setUpdateDate(new Date());
 		Integer categoryId=null;
 		try {
 			//根据输入的栏目名查找栏目id
+			String categoryName = articleAndCategoryName.getCategoryName();
 			categoryId = categoryService.findIdByName(categoryName);
 		} catch (Exception e1) {
 			return MessageUtil.error(500, e1.getMessage());
 		}
+		
+			article.setCategory_id(categoryId);
+			System.out.println("传入service层前："+article);
 		try {
-			Article article = new Article();
-			article.setId(articleAndCategoryName.getId());
-			article.setTitle(articleAndCategoryName.getTitle());
-			article.setAuthor(articleAndCategoryName.getAuthor());
-			article.setIntro(articleAndCategoryName.getIntro());
-			article.setUpdateDate(new Date());
-			article.setClickTimes(0);
-			article.setWords(articleAndCategoryName.getWords());
-			article.setState(articleAndCategoryName.getState());
-			article.setImage(articleAndCategoryName.getImage());
-			if(categoryId!=null)
-				article.setCategory_id(categoryId);
-			else {
-				article.setCategory_id(articleService.findCategoryIdById(articleAndCategoryName.getId()));
-			}
 			articleService.saveOrUpdate(article);
-			return MessageUtil.success("更新成功！");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return MessageUtil.error(500, e.getMessage());
 		}
+		return MessageUtil.success("更新成功！");
 	}
 	@GetMapping("/findById")
 	@ApiOperation("根据id查询文章")
@@ -89,7 +94,7 @@ public class ArticleController {
 			ac.setImage(article.getImage());
 			//words字段处理
 				ac.setWords(article.getWords());
-			ac.setCategoryNmae(name);
+			ac.setCategoryName(name);
 			message=MessageUtil.success(ac);
 		} catch (Exception e) {
 			message=MessageUtil.error(500, e.getMessage());
@@ -102,7 +107,7 @@ public class ArticleController {
 		List<Article> list = articleService.findAll();
 		List<ArticleAndCategoryName> aclist=new ArrayList<ArticleAndCategoryName>();
 		for(Article article:list) {
-			String categoryName=categoryService.findNameById(article.getId());
+			String categoryName=categoryService.findNameById(article.getCategory_id());
 			ArticleAndCategoryName ac = new ArticleAndCategoryName(article.getId(), article.getAuthor(), article.getClickTimes(), 
 					article.getIntro(), article.getUpdateDate(), 
 					article.getTitle(),article.getState(),article.getWords(), article.getImage(),categoryName);

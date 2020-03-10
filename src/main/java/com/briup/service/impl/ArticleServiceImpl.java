@@ -31,6 +31,7 @@ public class ArticleServiceImpl implements IArticleService{
 		if(article!=null) {
 			Integer id = article.getId();
 			if(id==null) {
+				article.setClickTimes(0);
 				articleDao.save(article);
 			}else {
 				//根据id查出文章
@@ -39,34 +40,29 @@ public class ArticleServiceImpl implements IArticleService{
 				String author = article.getAuthor();
 				String title = article.getTitle();
 				Integer category_id = article.getCategory_id();
-				String content = article.getIntro();
+				String intro = article.getIntro();
 				Integer words = article.getWords();
 				String state = article.getState();
 				String image = article.getImage();
-				Date updateDate = article.getUpdateDate();
-				article_db.setUpdateDate(updateDate);
-				if(author!=null) 
+				if((author!=null)&&(author!="")) 
 					article_db.setAuthor(author);
-				if(title!=null)
+				if(title!=null&&(title!=""))
 					article_db.setTitle(title);
 				if(category_id!=null)
 					article_db.setCategory_id(category_id);
-				if(content!=null)
-					article_db.setIntro(content);
+				if(intro!=null&&(intro!=""))
+					article_db.setIntro(intro);
 				if(words!=null)
 					article_db.setWords(words);
-				if(state!=null)
+				if(state!=null&&(state!=""))
 					article_db.setState(state);
-				if(image!=null)
+				if(image!=null&&(image!=""))
 					article_db.setImage(image);
-				
 				articleDao.save(article_db);
 			}
 		}else{
 			throw new Exception("参数为空");
 		}
-		
-		
 	}
 	@Override
 	public List<Article> findAll() {
