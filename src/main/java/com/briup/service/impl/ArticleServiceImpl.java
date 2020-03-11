@@ -18,7 +18,8 @@ public class ArticleServiceImpl implements IArticleService{
 		Optional<Article> opt = articleDao.findById(id);
 		Article article = opt.isPresent()?opt.get():null;
 		if(article!=null) {
-			article.setClickTimes(article.getClickTimes()+1);
+			if(article.getClickTimes()!=null)
+				article.setClickTimes(article.getClickTimes()+1);
 			articleDao.save(article);
 			return article;
 		}else {

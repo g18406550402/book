@@ -35,29 +35,9 @@ class CmsApplicationTests {
 	@Test
 	void test1() throws Exception {
 		System.out.println("----------------------------");
-		Integer article_id = 13;
-		Article article = new Article();
-		if(article_id!=null) {
-			try {
-				article = articleService.findById(article_id);
-				System.out.println("未修改前："+article);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				return ;
-			}
-			//封装文章信息--更新
-			article.setTitle(null);
-			article.setAuthor(null);
-			article.setIntro(null);
-			article.setWords(null);
-			article.setState(null);
-			article.setImage(null);
-			article.setUpdateDate(new Date());
-			
-			
-			
+		Article article = articleService.findById(50);
+		System.out.println(article);
 		System.out.println("----------------------------");
-		}
-	
 	}
+	
 }
