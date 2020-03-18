@@ -7,16 +7,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="book_customer")
-public class Customer {
+@Table(name="book_administrator")
+public class Administrator {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String username;
 	private String password;
-	public Customer() {
+	public Administrator() {
 	}
-	public Customer(String username, String password) {
+	public Administrator(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -41,9 +41,6 @@ public class Customer {
 	}
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", username=" + username + ", password=" + password + "]";
+		return "Administrator [id=" + id + ", username=" + username + ", password=" + password + "]";
 	}
-	
-	
-	
 }
